@@ -46,4 +46,12 @@ public class Employee {
 	@Embedded
 	private Address address;
 	
+	
+	public Employee(EmployeeRegisterData data) {
+		this.name = data.name();
+		this.email = data.email();
+		this.cpf = data.cpf();
+		this.specialty = data.specialty();
+		this.address = new Address(data.address());
+	}
 }

@@ -77,4 +77,5 @@ public class Book {
 	public void activate() {
 		this.activate = true;
 	}
+	
 }

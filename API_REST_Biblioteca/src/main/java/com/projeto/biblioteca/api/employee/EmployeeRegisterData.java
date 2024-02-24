@@ -23,6 +23,7 @@ public record EmployeeRegisterData(
 		@NotNull
 		Specialty specialty,
 		
+		@NotNull
 		@Valid
 		AddressData address
 		) {

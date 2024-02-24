@@ -1,7 +1,5 @@
 package com.projeto.biblioteca.api.employee;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import com.projeto.biblioteca.api.address.Address;
 
 import jakarta.persistence.Embedded;
@@ -12,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +21,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Table(name = "employees")
+@Table(name = "employee")
 @Entity(name = "Employee")
 public class Employee {
 	
@@ -33,11 +30,7 @@ public class Employee {
 	private Long id;
 	
 	private String name;
-	
-	@Email
 	private String email;
-	
-	@CPF
 	private String cpf;
 	
 	@Enumerated(EnumType.STRING)

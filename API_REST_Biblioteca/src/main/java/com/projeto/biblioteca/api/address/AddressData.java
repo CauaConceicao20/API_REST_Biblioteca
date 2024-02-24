@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Pattern;
 
 public record AddressData(
 		
-		@NotBlank
+		@NotBlank	
 		@Pattern(regexp ="\\d{8}")
 		String cep,
 		

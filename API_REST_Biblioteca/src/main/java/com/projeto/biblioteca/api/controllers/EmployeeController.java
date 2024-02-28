@@ -4,8 +4,11 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +18,7 @@ import com.projeto.biblioteca.api.employee.Employee;
 import com.projeto.biblioteca.api.employee.EmployeeDetailsData;
 import com.projeto.biblioteca.api.employee.EmployeeListData;
 import com.projeto.biblioteca.api.employee.EmployeeRegisterData;
+import com.projeto.biblioteca.api.employee.EmployeeUpdateData;
 import com.projeto.biblioteca.api.repository.EmployeeRepository;
 
 import jakarta.transaction.Transactional;
@@ -40,7 +44,24 @@ public class EmployeeController {
 	@GetMapping("/listEmployee")
 	public ResponseEntity<List<EmployeeListData>> listEmployees() {
 		var list = repository.findAll().stream().map(EmployeeListData::new).toList();
-	
+
 		return ResponseEntity.ok(list);
 	}
+	
+	@PutMapping("/updateEmployee")
+	@Transactional
+	public ResponseEntity<EmployeeDetailsData> updateEmployee(@RequestBody @Valid EmployeeUpdateData data) {
+		var employee = repository.getReferenceById(data.id());
+		employee.employeeUpdateData(data);
+		
+		return ResponseEntity.ok(new EmployeeDetailsData(employee));
+	}
+	
+	@DeleteMapping("/employeeDelete/{id}")
+	public ResponseEntity<Void> Deleteemployee(@PathVariable Long id) {
+		repository.deleteById(id);
+		
+		return ResponseEntity.noContent().build();
+	}
+	
 }

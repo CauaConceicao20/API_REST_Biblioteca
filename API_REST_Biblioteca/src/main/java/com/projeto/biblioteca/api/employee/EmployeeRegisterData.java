@@ -3,6 +3,7 @@ package com.projeto.biblioteca.api.employee;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.projeto.biblioteca.api.address.AddressData;
+import com.projeto.biblioteca.api.services.CpfAlreadyRegistered;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -18,6 +19,7 @@ public record EmployeeRegisterData(
 		String email,
 		
 		@CPF
+		@CpfAlreadyRegistered
 		String cpf,
 		
 		@NotNull

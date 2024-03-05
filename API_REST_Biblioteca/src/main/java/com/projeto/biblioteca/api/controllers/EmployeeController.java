@@ -34,11 +34,12 @@ public class EmployeeController {
 	@PostMapping("/registerEmployee")
 	@Transactional
 	public ResponseEntity<EmployeeDetailsData> registerEmployee(@RequestBody @Valid EmployeeRegisterData data, UriComponentsBuilder uriBuilder ) {
-		var employee = new Employee(data);
-		repository.save(employee);
-		var uri = uriBuilder.path("/employee/{id}").buildAndExpand(employee.getId()).toUri();
+			var employee = new Employee(data);
+			repository.save(employee);
+			var uri = uriBuilder.path("/employee/{id}").buildAndExpand(employee.getId()).toUri();
+			
+			return ResponseEntity.created(uri).body(new EmployeeDetailsData(employee));
 		
-		return ResponseEntity.created(uri).body(new EmployeeDetailsData(employee));
 	}
 	
 	@GetMapping("/listEmployee")
@@ -57,7 +58,7 @@ public class EmployeeController {
 		return ResponseEntity.ok(new EmployeeDetailsData(employee));
 	}
 	
-	@DeleteMapping("/employeeDelete/{id}")
+	@DeleteMapping("/deleteEmployee/{id}")
 	public ResponseEntity<Void> Deleteemployee(@PathVariable Long id) {
 		repository.deleteById(id);
 		

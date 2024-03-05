@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.projeto.biblioteca.api.employee.Employee;
+import com.projeto.biblioteca.api.employee.EmployeeConsultData;
 import com.projeto.biblioteca.api.employee.EmployeeDetailsData;
 import com.projeto.biblioteca.api.employee.EmployeeListData;
 import com.projeto.biblioteca.api.employee.EmployeeRegisterData;
@@ -39,14 +40,27 @@ public class EmployeeController {
 			var uri = uriBuilder.path("/employee/{id}").buildAndExpand(employee.getId()).toUri();
 			
 			return ResponseEntity.created(uri).body(new EmployeeDetailsData(employee));
-		
 	}
 	
 	@GetMapping("/listEmployee")
 	public ResponseEntity<List<EmployeeListData>> listEmployees() {
-		var list = repository.findAll().stream().map(EmployeeListData::new).toList();
+		var list = repository.findAllByActivateTrue().stream().map(EmployeeListData::new).toList();
 
 		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/listEmployeesInatives")
+	public ResponseEntity<List<EmployeeListData>> ListEmployeesInactives() {
+		var list = repository.findAllByActivateFalse().stream().map(EmployeeListData::new).toList();
+		
+		return ResponseEntity.ok(list);
+	}
+	
+	@GetMapping("/consultEmployee/{cpf}")
+	public ResponseEntity<EmployeeConsultData> consultEmployee(@PathVariable String cpf) {
+		var employee = repository.findByCpf(cpf); 
+		
+		return ResponseEntity.ok(new EmployeeConsultData(employee));
 	}
 	
 	@PutMapping("/updateEmployee")
@@ -56,6 +70,25 @@ public class EmployeeController {
 		employee.employeeUpdateData(data);
 		
 		return ResponseEntity.ok(new EmployeeDetailsData(employee));
+	}
+	
+	@PutMapping("/inactivateEmployee/{id}")
+	@Transactional
+	public ResponseEntity<?> inactivateEmployee(@PathVariable Long id) {
+		var employee = repository.findById(id);
+		employee.get().inactivate();
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/reactiveEmployee/{id}")
+	@Transactional
+	public ResponseEntity<?> reactivateEmployee(@PathVariable Long id) {
+		var employee = repository.findById(id);
+		employee.get().reactivate();
+		repository.save(employee.get());
+		
+		return ResponseEntity.ok(employee.get());
 	}
 	
 	@DeleteMapping("/deleteEmployee/{id}")

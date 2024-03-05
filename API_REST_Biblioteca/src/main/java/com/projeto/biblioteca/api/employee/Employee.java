@@ -39,6 +39,8 @@ public class Employee {
 	@Embedded
 	private Address address;
 	
+	private boolean activate;
+	
 	
 	public Employee(EmployeeRegisterData data) {
 		this.name = data.name();
@@ -46,7 +48,17 @@ public class Employee {
 		this.cpf = data.cpf();
 		this.specialty = data.specialty();
 		this.address = new Address(data.address());
+		this.activate = true;
 	}
+	
+	public void inactivate() {
+		this.activate = false;
+	}
+	
+	public void reactivate() {
+		this.activate = true;
+		
+	}	
 	
 	public void employeeUpdateData(EmployeeUpdateData data) {
 		if(data.name()!= null) {
@@ -60,5 +72,5 @@ public class Employee {
 		if(data.address() != null) {
 			this.address = new Address(data.address());
 		}
-	}		
+	}	
 }

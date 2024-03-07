@@ -1,9 +1,11 @@
 package com.projeto.biblioteca.api.employee;
 
-public record EmployeeListData(String name, Specialty specialty) {
+public record EmployeeListData(Long id, String name, String email,Specialty specialty) {
 	
 	public EmployeeListData(Employee employee) {
-		this(employee.getName(),
+		this(employee.getId(),
+			 employee.getName(),
+			 employee.getEmail(),
 			 employee.getSpecialty()
 			 );
 		}

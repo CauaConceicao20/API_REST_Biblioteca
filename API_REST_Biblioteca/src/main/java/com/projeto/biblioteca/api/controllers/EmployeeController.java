@@ -72,30 +72,29 @@ public class EmployeeController {
 		return ResponseEntity.ok(new EmployeeDetailsData(employee));
 	}
 	
-	@PutMapping("/inactivateEmployee/{id}")
-	@Transactional
-	public ResponseEntity<?> inactivateEmployee(@PathVariable Long id) {
-		var employee = repository.findById(id);
-		employee.get().inactivate();
-		
-		return ResponseEntity.noContent().build();
-	}
-	
-	@PutMapping("/reactiveEmployee/{id}")
-	@Transactional
-	public ResponseEntity<?> reactivateEmployee(@PathVariable Long id) {
-		var employee = repository.findById(id);
-		employee.get().reactivate();
-		repository.save(employee.get());
-		
-		return ResponseEntity.ok(employee.get());
-	}
-	
 	@DeleteMapping("/deleteEmployee/{id}")
 	public ResponseEntity<Void> Deleteemployee(@PathVariable Long id) {
 		repository.deleteById(id);
 		
 		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/inactivateEmployee/{id}")
+	@Transactional
+	public ResponseEntity<?> inactivateEmployee(@PathVariable Long id) {
+		var employee = repository.getReferenceById(id);
+		employee.inactivate();
+		
+		return ResponseEntity.ok(employee);
+	}
+	
+	@PutMapping("/reactiveEmployee/{id}")
+	@Transactional
+	public ResponseEntity<?> reactivateEmployee(@PathVariable Long id) {
+		var employee = repository.getReferenceById(id);
+		employee.reactivate();
+		
+		return ResponseEntity.ok(employee);
 	}
 	
 }

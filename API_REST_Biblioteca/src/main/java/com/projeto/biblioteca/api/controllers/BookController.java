@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.projeto.biblioteca.api.book.Book;
+import com.projeto.biblioteca.api.book.BookAmountData;
 import com.projeto.biblioteca.api.book.BookDetailsData;
 import com.projeto.biblioteca.api.book.BookListData;
 import com.projeto.biblioteca.api.book.BookRegistrationData;
 import com.projeto.biblioteca.api.book.BookUpdateData;
 import com.projeto.biblioteca.api.repository.BookRepository;
+import com.projeto.biblioteca.api.services.BookService;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -30,6 +32,9 @@ public class BookController {
 
 	@Autowired
 	private BookRepository repository;
+	
+	@Autowired
+	private BookService service;
 	
 	@PostMapping("/registerBook")
 	@Transactional
@@ -68,6 +73,22 @@ public class BookController {
 		book.update(data);
 		
 		return ResponseEntity.ok(new BookDetailsData(book));
+	}
+	
+	@PutMapping("/addStock")
+	@Transactional
+	public ResponseEntity<Void> addStock(@RequestBody @Valid BookAmountData data) {
+		service.addQuantity(data.id(), data.amount());
+		
+		return ResponseEntity.noContent().build();
+	}
+	
+	@PutMapping("/removeFromStock")
+	@Transactional
+	public ResponseEntity<Void> removeFromStock(@RequestBody @Valid BookAmountData data) {
+		service.removeQuantity(data.id(), data.amount());
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/deleteBook/{id}")

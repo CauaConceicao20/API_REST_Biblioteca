@@ -60,14 +60,21 @@ public class Book {
 		if(data.author() != null)
 			this.author = data.author();
 		
-		if(data.amount() != 0 && data.amount()> 0)
-			this.amount = data.amount();
-		
 		if(data.gender() != null)
 			this.gender = data.gender();
 		
 		if(data.format() != null)
 			this.gender = data.gender();
+	}
+	
+	public void addQuantity(int amount) {
+		this.amount += amount;
+		
+	}
+	
+	public void removeQuantity(int amount) {
+		this.amount -= amount;
+		
 	}
 	
 	public void inactivate() {

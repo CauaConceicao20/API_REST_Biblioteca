@@ -1,7 +1,6 @@
 package com.projeto.biblioteca.api.book;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 
 public record BookUpdateData(
 		
@@ -12,9 +11,6 @@ public record BookUpdateData(
 	
 		String author,
 		
-		@Positive
-		int amount,
-
 		Gender gender,
 		Format format
 		) {
